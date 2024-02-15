@@ -6,15 +6,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <script src="app.js"></script>
   </head>
-  <body ng-controller="MainController as mainCtrl">
-    <div>
-      <h2>AngularJS and PHP Database Connection</h2>
-      <button ng-click="mainCtrl.connectToDatabase()">
-        Connect to Database
-      </button>
-      <div ng-show="mainCtrl.connected">
-        <p>Connected</p>
-      </div>
-    </div>
+  <body ng-controller="userCtrl">
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>email</th>
+        <th>Password</th>
+      </tr>
+      <tr ng-repeat="user in users">
+        <td>{{ user.username }}</td>
+      </tr>
+    </table>
   </body>
 </html>
