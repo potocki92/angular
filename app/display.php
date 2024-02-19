@@ -1,5 +1,6 @@
 <?php
-require "connect.php";
+require_once "DBModel.php";
+require_once "DBController.php";
 
 // Ustawianie nagłówków CORS
 header("Access-Control-Allow-Origin: http://localhost:8000");
@@ -11,24 +12,26 @@ if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
+$dbHost = "localhost:3307";
+$dbName = "test";
+$dbUsername = "root";
+$dbPassword = "";
+$db = new PDO("mysql:host=$dbHost;dbname=$dbName", $dbUsername, $dbPassword);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$table_name = 'todos';
-$query = "SELECT * FROM users";
-$result = mysqli_query($conn, $query);
-$data = array();
+$tableName = 'todos';
+$dbModel = new DBModel($db);
+$dbController = new DBController($dbModel, $tableName);
 
-if (!$result) {
-    $response = array('error' => 'Błąd zapytania: ' . mysqli_error($conn));
-} else {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $data[] = $row;
-    }
-
-    mysqli_close($conn);
-    $response = array('data' => $data);
+if(isset($_REQUEST['type']) && !empty($_REQUEST['type'])) {
+    $type = $_REQUEST['type'];
+    match($type) {
+        'view' => $dbController->getTodos(),
+        'add' => $dbController->addTodo(),
+        'edit' => $dbController->editTodo(),
+        'update' => $dbController->updateTodo(),
+        'delete' => $dbController->deleteTodo(),
+        default => die('Invalid type parameter'),
+    };
 }
-
-$jsonResponse = json_encode($response);
-header('Content-Type: application/json');
-echo json_encode($response);
 ?>

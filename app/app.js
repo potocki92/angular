@@ -1,19 +1,19 @@
 angular
   .module("crudApp", [])
-  .controller("userController", function ($scope, $http) {
-    $scope.users = [];
+  .controller("todoController", function ($scope, $http) {
+    $scope.todos = [];
     $scope.tempUserData = {};
     // function to get records from the database
     $scope.getRecords = function () {
       $http
-        .get("http://localhost:3000/app/action.php", {
+        .get("http://localhost:3000/app/display.php", {
           params: {
             type: "view",
           },
         })
         .success(function (response) {
           if (response.status == "OK") {
-            $scope.users = response.records;
+            $scope.todos = response.records;
           }
         });
     };
@@ -30,7 +30,7 @@ angular
         },
       };
       $http
-        .post("http://localhost:3000/app/action.php", data, config)
+        .post("http://localhost:3000/app/display.php", data, config)
         .success(function (response) {
           if (response.status == "OK") {
             if (type == "edit") {
@@ -95,7 +95,7 @@ angular
           },
         };
         $http
-          .post("http://localhost:3000/app/action.php", data, config)
+          .post("http://localhost:3000/app/display.php", data, config)
           .success(function (response) {
             if (response.status == "OK") {
               var index = $scope.users.indexOf(user);
