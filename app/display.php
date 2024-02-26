@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit;
 }
 
-$dbHost = "localhost:3307";
+$dbHost = "localhost:3306";
 $dbName = "test";
 $dbUsername = "root";
 $dbPassword = "";

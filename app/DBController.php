@@ -19,6 +19,7 @@
                 $data['status'] = 'ERR';
             }
             echo json_encode($data);
+            exit();
         }
 
         public function addTodo() {

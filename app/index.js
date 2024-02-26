@@ -3,21 +3,25 @@ angular
   .controller("todosController", function ($scope, $http) {
     $scope.todos = [];
     $scope.tempTodosData = {};
-    const URL = "http://localhost:3000/app/display.php";
+    const URL = "http://localhost:63342/angular/app/display.php";
 
-    $scope.getRecords = () => {
-      $http
-        .get(URL, {
-          params: {
-            type: "view",
-          },
-        })
-        .success(function (response) {
-          if (response.status == "OK") {
-            $scope.todos = response.records;
-          }
-        });
-    };
+      $scope.getRecords = () => {
+          $http
+              .get(URL, {
+                  params: {
+                      type: "view",
+                  },
+              })
+              .then(function (response) {
+                  console.log("Data received from database:", response.data);
+                  if (response.data.status == "OK") {
+                      $scope.todos = response.data.records;
+                  }
+              })
+              .catch(function (error) {
+                  console.error("Error fetching data from database:", error);
+              });
+      };
 
     $scope.saveTodo = (type) => {
       let data = { data: $scope.tempTodosData, type: type };
