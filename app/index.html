@@ -44,7 +44,7 @@
               <div class="form-group">
                 <label>Done</label>
                 <input
-                  type="text"
+                  type="number"
                   class="form-control"
                   name="is_done"
                   ng-model="tempTodosData.is_done"
@@ -60,7 +60,7 @@
                 href="javascript:void(0);"
                 class="btn btn-success"
                 ng-hide="tempTodosData.id"
-                ng-click="addTodo(todo)"
+                ng-click="addTodo()"
                 >Add Todo</a
               >
               <a

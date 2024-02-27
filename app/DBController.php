@@ -12,7 +12,7 @@
         public function getTodos() {
             $todos = $this->dbModel->getRows($this->tableName);
             if($todos) {
-                $data['records'] = $this->dbModel->getRows($this->tableName);
+                $data['records'] = $todos;
                 $data['status'] = 'OK';
             } else {
                 $data['records'] = array();
@@ -22,17 +22,27 @@
             exit();
         }
 
-        public function addTodo() {
-            if(!empty($_POST['data'])) {
+        public function addTodo()
+        {
+            if (!empty($_POST['data'])) {
                 $todoData = array(
                     'text' => $_POST['data']['text'],
                     'is_done' => $_POST['data']['is_done']
                 );
                 $insert = $this->dbModel->insert($this->tableName, $todoData);
-                if($insert) {
-
+                if ($insert) {
+                    $data['data'] = $insert;
+                    $data['status'] = 'OK';
+                    $data['msg'] = 'Todo data has been added successfully.';
+                } else {
+                    $data['status'] = 'ERR';
+                    $data['msg'] = 'Some problem occurred, please try again.';
                 }
+            } else {
+                $data['status'] = 'ERR';
+                $data['msg'] = 'Invalid data received.';
             }
+            echo json_encode($data);
         }
 
         public function editTodo() {

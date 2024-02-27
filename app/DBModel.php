@@ -52,8 +52,29 @@ class DBModel {
                 $data = $query->fetchAll(PDO::FETCH_ASSOC);
             }
         }
-        return !empty($data) ? $data : false;}
-    public function insert($table,$data) {}
+        return !empty($data) ? $data : false;
+    }
+    public function insert($table, $data)
+    {
+        if (!empty($data) && is_array($data)) {
+            $columnString = implode(',', array_keys($data));
+            $valueString = ":" . implode(',:', array_keys($data));
+            $sql = "INSERT INTO " . $table . " (" . $columnString . ") VALUES (" . $valueString . ")";
+            $query = $this->db->prepare($sql);
+            foreach ($data as $key => $val) {
+                $query->bindValue(':' . $key, $val);
+            }
+            try {
+                $query->execute();
+                $data['id'] = $this->db->lastInsertId();
+                return $data;
+            } catch (PDOException $e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     public function update($table,$data, $conditions) {}
     public function delete($table,$conditions) {}
 }

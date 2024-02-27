@@ -24,14 +24,14 @@ angular
       };
 
     $scope.saveTodo = (type) => {
-      let data = { data: $scope.tempTodosData, type: type };
+      let data = $.param({ data: $scope.tempTodosData, type: type });
       let config = { headers: { "Content-Type": "application/json" } };
 
       $http
         .post(URL, data, config)
-        .then(function (response) {
-          if (response.data.status === "OK") {
-            if (type === "edit") {
+        .success(function (response) {
+          if (response.status == "OK") {
+              if (type == "edit") {
               $scope.todos[$scope.index] = angular.copy($scope.tempTodosData);
             } else {
               $scope.todos.push(response.data.data);
@@ -43,7 +43,7 @@ angular
 
             console.log("Success");
           } else {
-            console.log("Error:", response.data.message);
+            console.log("Error:", response.data);
           }
         })
         .catch(function (error) {
